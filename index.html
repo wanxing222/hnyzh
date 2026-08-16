@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万兴财富海内外账号</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+        body { background: #F5F5F5; color: #1A1A1A; padding-bottom: 80px; }
+
+        /* 顶部头部 */
+        .header {
+            background: linear-gradient(135deg, #E53935, #C62828);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            position: relative;
+        }
+        .header h1 { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .header a { color: #FFD700; text-decoration: none; }
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        /* 公告区 */
+        .notice-box {
+            background: #FFF8E1;
+            border-left: 4px solid #FF9800;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .notice-title { font-weight: bold; color: #E65100; margin-bottom: 10px; font-size: 15px; }
+        .notice-text { font-size: 14px; line-height: 2; color: #5D4037; }
+        .notice-text a { color: #0066CC; text-decoration: none; }
+
+        /* 搜索区 */
+        .search-box {
+            margin: 0 15px 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+        .search-btn {
+            padding: 12px 20px;
+            background: #E53935;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* 分类列表 - 首页 */
+        .category-section {
+            margin: 0 15px 15px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #E0E0E0;
+        }
+        .category-item {
+            padding: 15px;
+            border-bottom: 1px solid #F0F0F0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .category-item:last-child { border-bottom: none; }
+        .category-item:hover { background: #F9F9F9; }
+        .category-name { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+        .category-count { font-size: 13px; color: #888; }
+
+        /* 商品列表页 */
+        .product-section {
+            margin: 0 15px 15px;
+        }
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 3px solid #E53935;
+        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #E0E0E0;
+        }
+        .product-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .product-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #E53935;
+        }
+        .product-stock {
+            font-size: 14px;
+            color: #666;
+        }
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #E53935, #C62828);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* 订单查询页 */
+        .query-section {
+            margin: 20px 15px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px 15px;
+            border: 1px solid #E0E0E0;
+        }
+        .query-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #E53935;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .query-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .query-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+        .query-btn {
+            padding: 12px 20px;
+            background: #E53935;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .query-result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #F5F5F5;
+            border-radius: 8px;
+            display: none;
+        }
+        .query-result.show { display: block; }
+        .query-result-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #DDD;
+            font-size: 14px;
+        }
+        .query-result-item:last-child { border-bottom: none; }
+        .query-result-label { font-weight: bold; color: #333; display: inline-block; width: 90px; }
+        .no-result { color: #E53935; text-align: center; padding: 10px; }
+
+        /* 弹窗通用 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 16px;
+            padding: 25px 20px;
+            border: 2px solid #E53935;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #E53935;
+            margin-bottom: 20px;
+        }
+        .modal-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #EEE;
+            font-size: 15px;
+        }
+        .modal-row.total {
+            border-bottom: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding-top: 10px;
+        }
+        .modal-row.total .value { color: #E53935; font-size: 20px; }
+        .modal-input-row {
+            margin-bottom: 15px;
+        }
+        .modal-input-label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #DDD;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-btn.cancel {
+            background: #E0E0E0;
+            color: #666;
+        }
+        .modal-btn.confirm {
+            background: linear-gradient(135deg, #E53935, #C62828);
+            color: white;
+        }
+
+        /* 支付弹窗 */
+        .pay-address-box {
+            background: #FFF8E1;
+            border: 1px solid #FFC107;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .pay-address-label {
+            font-size: 14px;
+            color: #E65100;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .pay-address-text {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border: 1px solid #FFD54F;
+            margin-bottom: 12px;
+        }
+        .copy-btn {
+            width: 100%;
+            padding: 10px;
+            background: #FF9800;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .pay-tip {
+            background: #E8F5E9;
+            border-radius: 8px;
+            padding: 12px;
+            color: #2E7D32;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+        .order-id-box {
+            background: #E3F2FD;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .order-id-label {
+            font-size: 14px;
+            color: #1565C0;
+            margin-bottom: 6px;
+        }
+        .order-id-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0D47A1;
+            font-family: monospace;
+        }
+
+        /* 底部导航 */
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            border-top: 1px solid #E0E0E0;
+            z-index: 99;
+        }
+        .nav-item {
+            flex: 1;
+            padding: 10px 5px;
+            text-align: center;
+            color: #666;
+            cursor: pointer;
+        }
+        .nav-item.active { color: #E53935; }
+        .nav-icon { font-size: 20px; margin-bottom: 4px; }
+        .nav-text { font-size: 12px; }
+
+        .page { display: none; }
+        .page.active { display: block; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<!-- 首页 -->
+<div id="page-home" class="page active">
+    <div class="header">
+        <h1>万兴财富海内外账号</h1>
+        <p>✈️ <a href="https://t.me/wxch03" target="_blank">@wxch03</a></p>
+    </div>
+
+    <!-- 公告 -->
+    <div class="notice-box">
+        <div class="notice-title">📢 店铺公告</div>
+        <div class="notice-text">
+            使用教程：<br>
+            1、购买卡密<br>
+            2、输入手机号码 获取验证码（有序号的对应序号 例如COM9）<br>
+            3、验证码就在给的链接里面出现 下单后自行保存号码和链接，复制保存到手机或电脑上<br>
+            付完款不出订单，用留的联系方式重新查<br>
+            防失联频道：<a href="https://t.me/wxcfpd" target="_blank">万兴财富业务总频道 @wxcfpd</a><br>
+            ✈️客服：<a href="https://t.me/wxch03" target="_blank">@wxch03</a>
+        </div>
+    </div>
+
+    <!-- 搜索 -->
+    <div class="search-box">
+        <input type="text" class="search-input" id="searchInput" placeholder="物品搜索 例如：快手首次">
+        <button class="search-btn" onclick="searchProduct()">搜索</button>
+    </div>
+
+    <!-- 分类列表 -->
+    <div class="category-section">
+        <div class="category-item" onclick="goToCategory('all')">
+            <div class="category-name">⚡️ 卡密1692</div>
+            <div class="category-count">⬆️⬆️⬆️ 物品搜索例如快手首次（快手）关键字</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('wx')">
+            <div class="category-name">VX/企业VX/QQ 【注册换绑 成品老号】</div>
+            <div class="category-count">共110种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('douyin')">
+            <div class="category-name">抖音首次换绑/头条/成品抖音</div>
+            <div class="category-count">共111种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('kuaishou')">
+            <div class="category-name">快手专区 ♥【首次 成品小白 满月 满年 SM老】</div>
+            <div class="category-count">共144种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('xiaohongshu')">
+            <div class="category-name">小红书【首次成品老号 百粉千粉】</div>
+            <div class="category-count">共30种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('weibo')">
+            <div class="category-name">微博/哔哩哔哩/百度贴吧【首次 成品老号】</div>
+            <div class="category-count">共240种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('momo')">
+            <div class="category-name">陌陌/探探/灵魂 【首次 成品老】</div>
+            <div class="category-count">共322种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('taobao')">
+            <div class="category-name">淘宝/致富宝/闲鱼/拼多多【首次 成品号】</div>
+            <div class="category-count">共82种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('dingding')">
+            <div class="category-name">钉钉/连信/简信 【首次 成品老号】</div>
+            <div class="category-count">共43种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('sanwang')">
+            <div class="category-name">三网 192 各类冷门APP 【首次 换绑 成品号】</div>
+            <div class="category-count">共285种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('lengmen')">
+            <div class="category-name">各种冷门APP账密直登（海鸥、美篇、土豆密聊）</div>
+            <div class="category-count">共144种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('intl')">
+            <div class="category-name">WhatsApp Line Kakao 成品号</div>
+            <div class="category-count">共28种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('tg')">
+            <div class="category-name">TG全球飞机号-各国靓号 ✈️</div>
+            <div class="category-count">共55种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('appleid')">
+            <div class="category-name">全球各国苹果ID</div>
+            <div class="category-count">共25种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('card')">
+            <div class="category-name">港卡 ♥美卡 ♥首次/成品</div>
+            <div class="category-count">共54种商品</div>
+        </div>
+        <div class="category-item" onclick="goToCategory('kyc')">
+            <div class="category-name">加密货币交易所KYC账号</div>
+            <div class="category-count">共18种商品</div>
+        </div>
+    </div>
+</div>
+
+<!-- 商品列表页 -->
+<div id="page-category" class="page">
+    <div class="header" style="position: relative;">
+        <a href="javascript:void(0)" class="back-btn" onclick="goHome()">← 返回</a>
+        <h1 id="catTitle">商品列表</h1>
+        <p id="catSubtitle">选择商品</p>
+    </div>
+
+    <div class="product-section">
+        <div class="product-title" id="productCatName"></div>
+        <div id="productList"></div>
+    </div>
+</div>
+
+<!-- 订单查询页 -->
+<div id="page-query" class="page">
+    <div class="header" style="position: relative;">
+        <a href="javascript:void(0)" class="back-btn" onclick="goHome()">← 返回</a>
+        <h1>订单查询</h1>
+        <p>输入下单时的联系方式查询</p>
+    </div>
+
+    <div class="query-section">
+        <div class="query-title">🔍 订单查询</div>
+        <div class="query-row">
+            <input type="text" class="query-input" id="queryContact" placeholder="填写下单时的联系方式">
+            <button class="query-btn" onclick="queryOrders()">查询</button>
+        </div>
+        <div id="queryResultBox" class="query-result">
+            <div id="queryResultContent"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 确认订单弹窗 -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2 class="modal-title">确认订单</h2>
+        <div class="modal-row">
+            <span>商品名称：</span>
+            <span id="confirmName"></span>
+        </div>
+        <div class="modal-row">
+            <span>单价：</span>
+            <span id="confirmPrice"></span>
+        </div>
+        <div class="modal-row">
+            <span>库存：</span>
+            <span id="confirmStock"></span>
+        </div>
+        <div class="modal-input-row">
+            <div class="modal-input-label">联系方式 *</div>
+            <input type="text" class="modal-input" id="buyContact" placeholder="请输入TG/手机号/微信号">
+        </div>
+        <div class="modal-row total">
+            <span>支付金额：</span>
+            <span class="value" id="confirmTotal"></span>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn cancel" onclick="closeConfirmModal()">取消</button>
+            <button class="modal-btn confirm" onclick="validateAndPay()">确认支付</button>
+        </div>
+    </div>
+</div>
+
+<!-- 支付弹窗 -->
+<div id="payModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2 class="modal-title">💳 USDT TRC20 支付</h2>
+        <div class="order-id-box">
+            <div class="order-id-label">📌 订单号（请保存）</div>
+            <div class="order-id-value" id="orderIdValue"></div>
+        </div>
+        <div class="pay-address-box">
+            <div class="pay-address-label">请向以下地址转账支付</div>
+            <div class="pay-address-text">
+                币种：USDT (TRC20 网络)<br>
+                地址：TV2TuxxvGgzD2tQ8C6VDpqa7yMvn8AAmcK<br>
+                金额：<span id="payAmount">0.00</span> USDT
+            </div>
+            <button class="copy-btn" onclick="copyPayAddress()">📋 复制地址与金额</button>
+        </div>
+        <div class="pay-tip">
+            ⚠️ 注意事项：<br>
+            1. 请务必使用 TRC20 网络转账，不要使用其他网络<br>
+            2. 精确支付显示的金额，不要多转或少转<br>
+            3. 转账后保存交易哈希，联系客服发货<br>
+            4. 防失联频道：<a href="https://t.me/wxcfpd" target="_blank" style="color:inherit;text-decoration:underline;">@wxcfpd</a><br>
+            5. 客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit;text-decoration:underline;">@wxch03</a>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn cancel" onclick="closePayModal()">返回</button>
+            <button class="modal-btn confirm" onclick="alert('转账完成后请联系客服 @wxch03 提供订单号、联系方式和交易哈希，客服将尽快为您发货')">已完成转账</button>
+        </div>
+    </div>
+</div>
+
+<!-- 底部导航 -->
+<div class="footer-nav">
+    <div class="nav-item active" id="nav-home" onclick="goHome()">
+        <div class="nav-icon">🏠</div>
+        <div class="nav-text">商城</div>
+    </div>
+    <div class="nav-item" id="nav-query" onclick="goToQuery()">
+        <div class="nav-icon">🔍</div>
+        <div class="nav-text">订单查询</div>
+    </div>
+    <div class="nav-item" onclick="window.open('https://t.me/wxch03', '_blank')">
+        <div class="nav-icon">💬</div>
+        <div class="nav-text">联系客服</div>
+    </div>
+    <div class="nav-item" onclick="window.open('https://t.me/wxcfpd', '_blank')">
+        <div class="nav-icon">📢</div>
+        <div class="nav-text">防失联</div>
+    </div>
+</div>
+
+<script>
+// USDT汇率
+const RATE = 6.85;
+const USDT_ADDRESS = 'TV2TuxxvGgzD2tQ8C6VDpqa7yMvn8AAmcK';
+const PRICE_MULTIPLIER = 10;
+const PRICE_DIVISOR = 5; // 下调5倍的除数
+
+// 订单存储
+let orders = [];
+
+// 分类名称映射
+const categoryNames = {
+    all: { title: '⚡️ 卡密1692', subtitle: '共1种商品' },
+    wx: { title: 'VX/企业VX/QQ', subtitle: '共110种商品' },
+    douyin: { title: '抖音/头条专区', subtitle: '共111种商品' },
+    kuaishou: { title: '快手专区', subtitle: '共144种商品' },
+    xiaohongshu: { title: '小红书专区', subtitle: '共30种商品' },
+    weibo: { title: '微博/B站/贴吧', subtitle: '共240种商品' },
+    momo: { title: '陌陌/探探/灵魂', subtitle: '共322种商品' },
+    taobao: { title: '淘宝/支付宝/拼多多', subtitle: '共82种商品' },
+    dingding: { title: '钉钉/连信/简信', subtitle: '共43种商品' },
+    sanwang: { title: '三网192/冷门APP', subtitle: '共285种商品' },
+    lengmen: { title: '冷门APP直登账号', subtitle: '共144种商品' },
+    intl: { title: 'WhatsApp Line Kakao 成品号', subtitle: '共28种商品' },
+    tg: { title: 'TG全球飞机号-各国靓号 ✈️', subtitle: '共55种商品' },
+    appleid: { title: '全球各国苹果ID', subtitle: '共25种商品' },
+    card: { title: '港卡/美卡', subtitle: '共54种商品' },
+    kyc: { title: '交易所KYC账号', subtitle: '共18种商品' }
+};
+
+// 计算最终价格
+function calcPrice(basePrice, isSpecial = false) {
+    let price = basePrice * PRICE_MULTIPLIER;
+    if (isSpecial) {
+        price = price / PRICE_DIVISOR; // 下调5倍
+    }
+    return Math.round(price * 100) / 100;
+}
+
+// 完整商品数据
+const allProducts = [
+    { id: 'all1', name: '猪猪侠⚡️+852高质量香港企业VX首次注册留卡120天左右售后一切', price: calcPrice(4), stock: 1361, category: 'all' },
+    { id: 'wx1', name: 'VX全新号 未实名 可换绑', price: calcPrice(5), stock: 999, category: 'wx' },
+    { id: 'wx2', name: 'VX满月号 稳定老号 可实名', price: calcPrice(12), stock: 680, category: 'wx' },
+    { id: 'wx3', name: 'VX满年号 高权重 带朋友圈', price: calcPrice(35), stock: 256, category: 'wx' },
+    { id: 'wx4', name: '企业VX 全新开通 可认证', price: calcPrice(45), stock: 180, category: 'wx' },
+    { id: 'wx5', name: 'QQ全新号 太阳等级 无绑定', price: calcPrice(8), stock: 888, category: 'wx' },
+    { id: 'wx6', name: 'QQ月亮号 稳定可用 可换绑', price: calcPrice(15), stock: 520, category: 'wx' },
+    { id: 'wx7', name: 'VX注册换绑 代换绑服务', price: calcPrice(10), stock: 500, category: 'wx' },
+    { id: 'wx8', name: 'VX成品老号 多年号 高权重', price: calcPrice(68), stock: 110, category: 'wx' },
+    { id: 'dy1', name: '抖音首次换绑 全新白号 可实名', price: calcPrice(6), stock: 888, category: 'douyin' },
+    { id: 'dy2', name: '抖音成品号 满月号 可改资料', price: calcPrice(18), stock: 560, category: 'douyin' },
+    { id: 'dy3', name: '抖音老号 半年以上 高权重', price: calcPrice(45), stock: 320, category: 'douyin' },
+    { id: 'dy4', name: '头条全新号 可绑定抖音', price: calcPrice(5), stock: 999, category: 'douyin' },
+    { id: 'dy5', name: '头条成品号 老号带数据', price: calcPrice(22), stock: 280, category: 'douyin' },
+    { id: 'dy6', name: '抖音千粉号 千粉成品 可开橱窗', price: calcPrice(88), stock: 111, category: 'douyin' },
+    { id: 'ks1', name: '快手首次 全新小白号 可实名', price: calcPrice(5), stock: 1200, category: 'kuaishou' },
+    { id: 'ks2', name: '快手满月号 满月稳定号', price: calcPrice(15), stock: 850, category: 'kuaishou' },
+    { id: 'ks3', name: '快手满年号 一年以上老号', price: calcPrice(38), stock: 420, category: 'kuaishou' },
+    { id: 'ks4', name: '快手SM老号 实名成品号', price: calcPrice(65), stock: 144, category: 'kuaishou' },
+    { id: 'ks5', name: '快手百粉号 百粉小白号', price: calcPrice(12), stock: 680, category: 'kuaishou' },
+    { id: 'ks6', name: '快手千粉号 千粉成品号', price: calcPrice(78), stock: 220, category: 'kuaishou' },
+    { id: 'xhs1', name: '小红书首次 全新号 可实名', price: calcPrice(8), stock: 500, category: 'xiaohongshu' },
+    { id: 'xhs2', name: '小红书成品号 满月老号', price: calcPrice(25), stock: 280, category: 'xiaohongshu' },
+    { id: 'xhs3', name: '小红书百粉号 百粉带笔记', price: calcPrice(45), stock: 150, category: 'xiaohongshu' },
+    { id: 'xhs4', name: '小红书千粉号 千粉成品号', price: calcPrice(98), stock: 30, category: 'xiaohongshu' },
+    { id: 'wb1', name: '微博首次 全新号 可实名', price: calcPrice(6), stock: 800, category: 'weibo' },
+    { id: 'wb2', name: '微博成品号 老号带资料', price: calcPrice(22), stock: 450, category: 'weibo' },
+    { id: 'wb3', name: 'B站首次 全新号 可答题', price: calcPrice(8), stock: 700, category: 'weibo' },
+    { id: 'wb4', name: 'B站成品号 正式会员', price: calcPrice(28), stock: 320, category: 'weibo' },
+    { id: 'wb5', name: '百度贴吧首次 全新号', price: calcPrice(5), stock: 900, category: 'weibo' },
+    { id: 'wb6', name: '贴吧成品号 老号带等级', price: calcPrice(18), stock: 240, category: 'weibo' },
+    { id: 'mm1', name: '陌陌首次 全新号 可实名', price: calcPrice(10), stock: 600, category: 'momo' },
+    { id: 'mm2', name: '陌陌成品号 老号带资料', price: calcPrice(35), stock: 380, category: 'momo' },
+    { id: 'tt1', name: '探探首次 全新号 可实名', price: calcPrice(12), stock: 550, category: 'momo' },
+    { id: 'tt2', name: '探探成品号 老号带照片', price: calcPrice(38), stock: 322, category: 'momo' },
+    { id: 'lh1', name: '灵魂首次 全新号 可测试', price: calcPrice(8), stock: 700, category: 'momo' },
+    { id: 'tb1', name: '淘宝首次 全新号 可实名', price: calcPrice(8), stock: 800, category: 'taobao' },
+    { id: 'tb2', name: '淘宝成品号 老号带信誉', price: calcPrice(45), stock: 350, category: 'taobao' },
+    { id: 'zfb1', name: '支付宝首次 全新号 可实名', price: calcPrice(10), stock: 750, category: 'taobao' },
+    { id: 'pdd1', name: '拼多多首次 全新号', price: calcPrice(7), stock: 850, category: 'taobao' },
+    { id: 'pdd2', name: '拼多多成品号 老号带购物记录', price: calcPrice(28), stock: 82, category: 'taobao' },
+    { id: 'dd1', name: '钉钉首次 全新号 可认证', price: calcPrice(7), stock: 600, category: 'dingding' },
+    { id: 'dd2', name: '钉钉成品号 企业员工号', price: calcPrice(35), stock: 280, category: 'dingding' },
+    { id: 'lx1', name: '连信首次 全新号', price: calcPrice(6), stock: 700, category: 'dingding' },
+    { id: 'jx1', name: '简信首次 全新号', price: calcPrice(5), stock: 650, category: 'dingding' },
+    { id: 'sw1', name: '三网192 移动全新号 0月租', price: calcPrice(15), stock: 999, category: 'sanwang' },
+    { id: 'sw2', name: '三网192 联通全新号 低消', price: calcPrice(15), stock: 888, category: 'sanwang' },
+    { id: 'sw3', name: '三网192 电信全新号 正规卡', price: calcPrice(15), stock: 777, category: 'sanwang' },
+    { id: 'sw4', name: '各类冷门APP 换绑服务', price: calcPrice(20), stock: 500, category: 'sanwang' },
+    { id: 'sw5', name: '冷门APP 成品账号', price: calcPrice(25), stock: 285, category: 'sanwang' },
+    { id: 'lm1', name: '海鸥APP 账密直登 成品号', price: calcPrice(12), stock: 300, category: 'lengmen' },
+    { id: 'lm2', name: '美篇APP 成品老号 带文章', price: calcPrice(10), stock: 250, category: 'lengmen' },
+    { id: 'lm3', name: '土豆密聊 全新号 可加群', price: calcPrice(15), stock: 200, category: 'lengmen' },
+    { id: 'lm4', name: '其他冷门APP 直登账号', price: calcPrice(18), stock: 144, category: 'lengmen' },
+    // 以下分类价格下调5倍
+    { id: 'int1', name: 'WhatsApp 成品号 可接收短信', price: calcPrice(25, true), stock: 150, category: 'intl' },
+    { id: 'int2', name: 'Line 成品号 日本/台湾', price: calcPrice(28, true), stock: 120, category: 'intl' },
+    { id: 'int3', name: 'Kakao 成品号 韩国', price: calcPrice(30, true), stock: 90, category: 'intl' },
+    { id: 'int4', name: '海外社交账号 其他平台', price: calcPrice(35, true), stock: 28, category: 'intl' },
+    { id: 'tg1', name: 'TG全球飞机号 随机国家', price: calcPrice(35, true), stock: 88, category: 'tg' },
+    { id: 'tg2', name: 'TG美国号 全新可验证', price: calcPrice(45, true), stock: 66, category: 'tg' },
+    { id: 'tg3', name: 'TG香港号 本地号码', price: calcPrice(55, true), stock: 55, category: 'tg' },
+    { id: 'tg4', name: 'TG各国靓号 指定国家/区号', price: calcPrice(68, true), stock: 44, category: 'tg' },
+    { id: 'ai1', name: '美国区苹果ID 全新干净', price: calcPrice(18, true), stock: 250, category: 'appleid' },
+    { id: 'ai2', name: '日本区苹果ID 可下载日区应用', price: calcPrice(22, true), stock: 200, category: 'appleid' },
+    { id: 'ai3', name: '韩国区苹果ID 干净无绑定', price: calcPrice(22, true), stock: 180, category: 'appleid' },
+    { id: 'ai4', name: '各国区苹果ID 指定地区', price: calcPrice(25, true), stock: 25, category: 'appleid' },
+    { id: 'cd1', name: '港卡首次 香港银行账户 协助开户', price: calcPrice(120), stock: 54, category: 'card' },
+    { id: 'cd2', name: '港卡成品 已开好账户 可直接使用', price: calcPrice(280), stock: 32, category: 'card' },
+    { id: 'cd3', name: '美卡首次 美国银行账户 协助开户', price: calcPrice(150), stock: 45, category: 'card' },
+    { id: 'cd4', name: '美卡成品 老牌账户 高权重', price: calcPrice(380), stock: 28, category: 'card' },
+    { id: 'kyc1', name: '币安KYC账号 已认证 可交易', price: calcPrice(88), stock: 18, category: 'kyc' },
+    { id: 'kyc2', name: 'OKX KYC账号 已认证 可提币', price: calcPrice(85), stock: 15, category: 'kyc' },
+    { id: 'kyc3', name: '交易所KYC 代认证服务', price: calcPrice(120), stock: 12, category: 'kyc' }
+];
+
+let currentCategory = 'all';
+let selectedProduct = null;
+let currentOrderId = '';
+let currentBuyContact = '';
+
+// 生成订单号
+function generateOrderId() {
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    return `WXCF${timestamp}${random}`;
+}
+
+// 跳转到分类页
+function goToCategory(cat) {
+    currentCategory = cat;
+    const info = categoryNames[cat];
+    document.getElementById('catTitle').textContent = info.title;
+    document.getElementById('catSubtitle').textContent = info.subtitle;
+    document.getElementById('productCatName').textContent = info.title;
+    
+    renderProductList(cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat));
+    
+    document.getElementById('page-home').classList.remove('active');
+    document.getElementById('page-query').classList.remove('active');
+    document.getElementById('page-category').classList.add('active');
+    updateNavActive('');
+    window.scrollTo(0, 0);
+}
+
+// 返回首页
+function goHome() {
+    document.getElementById('page-category').classList.remove('active');
+    document.getElementById('page-query').classList.remove('active');
+    document.getElementById('page-home').classList.add('active');
+    updateNavActive('home');
+    window.scrollTo(0, 0);
+}
+
+// 跳转到查询页
+function goToQuery() {
+    document.getElementById('page-home').classList.remove('active');
+    document.getElementById('page-category').classList.remove('active');
+    document.getElementById('page-query').classList.add('active');
+    updateNavActive('query');
+    document.getElementById('queryResultBox').classList.remove('show');
+    document.getElementById('queryResultContent').innerHTML = '';
+    document.getElementById('queryContact').value = '';
+    window.scrollTo(0, 0);
+}
+
+// 更新导航激活状态
+function updateNavActive(active) {
+    document.querySelectorAll('.nav-item').forEach((item, index) => {
+        item.classList.remove('active');
+        if ((active === 'home' && index === 0) || (active === 'query' && index === 1)) {
+            item.classList.add('active');
+        }
+    });
+}
+
+// 搜索商品
+function searchProduct() {
+    const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+    if(!keyword) {
+        alert('请输入搜索关键词');
+        return;
+    }
+    const filtered = allProducts.filter(p => p.name.toLowerCase().includes(keyword));
+    if(filtered.length === 0) {
+        alert('未找到相关商品');
+        return;
+    }
+    document.getElementById('catTitle').textContent = `搜索结果：${keyword}`;
+    document.getElementById('catSubtitle').textContent = `找到 ${filtered.length} 种商品`;
+    document.getElementById('productCatName').textContent = `搜索结果 (${filtered.length}种)`;
+    renderProductList(filtered);
+    
+    document.getElementById('page-home').classList.remove('active');
+    document.getElementById('page-category').classList.add('active');
+    updateNavActive('');
+    window.scrollTo(0, 0);
+}
+
+// 渲染商品列表
+function renderProductList(list) {
+    const container = document.getElementById('productList');
+    if(list.length === 0) {
+        container.innerHTML = '<div style="padding:30px;text-align:center;color:#888;">暂无商品</div>';
+        return;
+    }
+    container.innerHTML = list.map(p => `
+        <div class="product-card">
+            <div class="product-name">${p.name}</div>
+            <div class="product-meta">
+                <div class="product-price">￥${p.price}</div>
+                <div class="product-stock">剩余${p.stock}件</div>
+            </div>
+            <button class="buy-btn" onclick="buyProduct('${p.id}')">立即购买</button>
+        </div>
+    `).join('');
+}
+
+// 购买商品
+function buyProduct(id) {
+    selectedProduct = allProducts.find(p => p.id === id);
+    if(!selectedProduct) return;
+
+    document.getElementById('confirmName').textContent = selectedProduct.name;
+    document.getElementById('confirmPrice').textContent = '￥' + selectedProduct.price;
+    document.getElementById('confirmStock').textContent = selectedProduct.stock + '件';
+    const usdtAmount = (selectedProduct.price / RATE).toFixed(4);
+    document.getElementById('confirmTotal').textContent = usdtAmount + ' USDT';
+
+    document.getElementById('confirmModal').classList.add('show');
+    document.getElementById('buyContact').value = '';
+}
+
+// 验证联系方式并进入支付
+function validateAndPay() {
+    const contact = document.getElementById('buyContact').value.trim();
+    if(!contact) {
+        alert('请填写联系方式！');
+        document.getElementById('buyContact').focus();
+        return;
+    }
+    
+    currentBuyContact = contact;
+    currentOrderId = generateOrderId();
+    
+    // 保存订单
+    const usdtAmount = (selectedProduct.price / RATE).toFixed(4);
+    orders.push({
+        orderId: currentOrderId,
+        productName: selectedProduct.name,
+        price: selectedProduct.price,
+        usdtAmount: usdtAmount,
+        contact: contact,
+        time: new Date().toLocaleString('zh-CN'),
+        status: '待支付'
+    });
+    
+    closeConfirmModal();
+    document.getElementById('orderIdValue').textContent = currentOrderId;
+    document.getElementById('payAmount').textContent = usdtAmount;
+    document.getElementById('payModal').classList.add('show');
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmModal').classList.remove('show');
+}
+
+function closePayModal() {
+    document.getElementById('payModal').classList.remove('show');
+}
+
+function copyPayAddress() {
+    const usdtAmount = (selectedProduct.price / RATE).toFixed(4);
+    const text = `订单号：${currentOrderId}\n联系方式：${currentBuyContact}\n币种：USDT (TRC20 网络)\n地址：${USDT_ADDRESS}\n金额：${usdtAmount} USDT`;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('✅ 订单信息、地址与金额已复制到剪贴板');
+    }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('✅ 订单信息、地址与金额已复制到剪贴板');
+    });
+}
+
+// 订单查询
+function queryOrders() {
+    const contact = document.getElementById('queryContact').value.trim();
+    if(!contact) {
+        alert('请输入下单时的联系方式！');
+        document.getElementById('queryContact').focus();
+        return;
+    }
+    
+    const resultBox = document.getElementById('queryResultBox');
+    const content = document.getElementById('queryResultContent');
+    
+    const myOrders = orders.filter(o => o.contact === contact);
+    
+    if(myOrders.length === 0) {
+        resultBox.classList.add('show');
+        content.innerHTML = '<div class="no-result">未找到该联系方式下的订单</div>';
+        return;
+    }
+    
+    resultBox.classList.add('show');
+    content.innerHTML = myOrders.map(o => `
+        <div class="query-result-item">
+            <span class="query-result-label">订单号：</span>${o.orderId}<br>
+            <span class="query-result-label">商品：</span>${o.productName}<br>
+            <span class="query-result-label">金额：</span>￥${o.price} / ${o.usdtAmount} USDT<br>
+            <span class="query-result-label">时间：</span>${o.time}<br>
+            <span class="query-result-label">状态：</span><span style="color:#E53935;font-weight:bold;">${o.status}</span>
+        </div>
+    `).join('');
+}
+</script>
+</body>
+</html>
