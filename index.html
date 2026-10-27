@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>万兴财富海内外账号</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif; }
         body { background: #F5F5F5; color: #1A1A1A; padding-bottom: 80px; }
 
         /* 顶部头部 */
@@ -273,6 +273,30 @@
             color: white;
         }
 
+        /* 支付方式选择 */
+        .pay-method-box {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .pay-method-item {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            font-weight: bold;
+            color: #666;
+        }
+        .pay-method-item.active {
+            border-color: #1677FF;
+            background: #E6F4FF;
+            color: #1677FF;
+        }
+
         /* 支付弹窗 */
         .pay-address-box {
             background: #FFF8E1;
@@ -296,6 +320,20 @@
             word-break: break-all;
             border: 1px solid #FFD54F;
             margin-bottom: 12px;
+        }
+        .alipay-link-box {
+            text-align: center;
+            padding: 15px;
+        }
+        .alipay-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #1677FF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
         }
         .copy-btn {
             width: 100%;
@@ -442,7 +480,8 @@
             <div class="category-name">WhatsApp Line Kakao 成品号</div>
             <div class="category-count">共28种商品</div>
         </div>
-        <div class="category-item" onclick="goToCategory('tg')">
+        <div class="category-item"
+onclick="goToCategory('tg')">
             <div class="category-name">TG全球飞机号-各国靓号 ✈️</div>
             <div class="category-count">共55种商品</div>
         </div>
@@ -468,7 +507,6 @@
         <h1 id="catTitle">商品列表</h1>
         <p id="catSubtitle">选择商品</p>
     </div>
-
     <div class="product-section">
         <div class="product-title" id="productCatName"></div>
         <div id="productList"></div>
@@ -482,11 +520,10 @@
         <h1>订单查询</h1>
         <p>输入下单时的联系方式查询</p>
     </div>
-
     <div class="query-section">
         <div class="query-title">🔍 订单查询</div>
         <div class="query-row">
-            <input type="text" class="query-input" id="queryContact" placeholder="填写下单时的联系方式">
+            <input type="text" class="query-input" id="queryContact" placeholder="请输入下单时的联系方式">
             <button class="query-btn" onclick="queryOrders()">查询</button>
         </div>
         <div id="queryResultBox" class="query-result">
@@ -521,7 +558,7 @@
         </div>
         <div class="modal-buttons">
             <button class="modal-btn cancel" onclick="closeConfirmModal()">取消</button>
-            <button class="modal-btn confirm" onclick="validateAndPay()">确认支付</button>
+            <button class="modal-btn confirm" onclick="validateAndPay()">去支付</button>
         </div>
     </div>
 </div>
@@ -529,31 +566,72 @@
 <!-- 支付弹窗 -->
 <div id="payModal" class="modal-overlay">
     <div class="modal-box">
-        <h2 class="modal-title">💳 USDT TRC20 支付</h2>
-        <div class="order-id-box">
-            <div class="order-id-label">📌 订单号（请保存）</div>
-            <div class="order-id-value" id="orderIdValue"></div>
-        </div>
-        <div class="pay-address-box">
-            <div class="pay-address-label">请向以下地址转账支付</div>
-            <div class="pay-address-text">
-                币种：USDT (TRC20 网络)<br>
-                地址：TV2TuxxvGgzD2tQ8C6VDpqa7yMvn8AAmcK<br>
-                金额：<span id="payAmount">0.00</span> USDT
+        <h2 class="modal-title">💳 选择支付方式</h2>
+        
+        <div class="pay-method-box">
+            <div class="pay-method-item active" data-method="alipay" onclick="switchPayMethod('alipay')">
+                💰 支付宝
             </div>
-            <button class="copy-btn" onclick="copyPayAddress()">📋 复制地址与金额</button>
+            <div class="pay-method-item" data-method="usdt" onclick="switchPayMethod('usdt')">
+                💎 USDT
+            </div>
         </div>
-        <div class="pay-tip">
-            ⚠️ 注意事项：<br>
-            1. 请务必使用 TRC20 网络转账，不要使用其他网络<br>
-            2. 精确支付显示的金额，不要多转或少转<br>
-            3. 转账后保存交易哈希，联系客服发货<br>
-            4. 防失联频道：<a href="https://t.me/wxcfpd" target="_blank" style="color:inherit;text-decoration:underline;">@wxcfpd</a><br>
-            5. 客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit;text-decoration:underline;">@wxch03</a>
+
+        <!-- 支付宝支付 -->
+        <div id="alipayContent">
+            <div class="order-id-box">
+                <div class="order-id-label">📌 订单号（请保存）</div>
+                <div class="order-id-value" id="orderIdValueAlipay"></div>
+            </div>
+            <div class="pay-address-box">
+                <div class="pay-address-label">支付金额</div>
+                <div class="pay-address-text" style="text-align:center; font-size:22px; font-weight:bold; color:#1677FF;">
+                    ￥<span id="payAmountCN">0.00</span>
+                </div>
+            </div>
+            <div class="alipay-link-box">
+                <a href="https://qr.alipay.com/fkx16193ubdgzfllkobdo53" target="_blank" class="alipay-btn">
+                    📱 打开支付宝付款
+                </a>
+            </div>
+            <div class="pay-tip">
+                ⚠️ 注意事项：<br>
+                1. 点击上方按钮，打开支付宝扫码付款<br>
+                2. 付款时请在备注填写您的订单号，方便快速核对<br>
+                3. 支付完成后，请保存支付截图，联系客服发货<br>
+                4. 防失联频道：<a href="https://t.me/wxcfpd" target="_blank" style="color:inherit; text-decoration:underline;">@wxcfpd</a><br>
+                5. 客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit; text-decoration:underline;">@wxch03</a>
+            </div>
         </div>
+
+        <!-- USDT支付 -->
+        <div id="usdtContent" class="hidden">
+            <div class="order-id-box">
+                <div class="order-id-label">📌 订单号（请保存）</div>
+                <div class="order-id-value" id="orderIdValue"></div>
+            </div>
+            <div class="pay-address-box">
+                <div class="pay-address-label">请向以下地址转账支付</div>
+                <div class="pay-address-text">
+                    币种：USDT (TRC20 网络)<br>
+                    地址：TV2TuxxvGgzD2tQ8C6VDpqa7yMvn8AAmcK<br>
+                    金额：<span id="payAmount">0.00</span> USDT
+                </div>
+                <button class="copy-btn" onclick="copyPayAddress()">📋 复制地址与金额</button>
+            </div>
+            <div class="pay-tip">
+                ⚠️ 注意事项：<br>
+                1. 请务必使用 <strong>TRC20 网络</strong>转账，选错网络资产可能丢失！<br>
+                2. 请精确支付显示金额，不要多转或少转<br>
+                3. 转账后保存交易哈希，联系客服确认发货<br>
+                4. 防失联频道：<a href="https://t.me/wxcfpd" target="_blank" style="color:inherit; text-decoration:underline;">@wxcfpd</a><br>
+                5. 客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit; text-decoration:underline;">@wxch03</a>
+            </div>
+        </div>
+
         <div class="modal-buttons">
             <button class="modal-btn cancel" onclick="closePayModal()">返回</button>
-            <button class="modal-btn confirm" onclick="alert('转账完成后请联系客服 @wxch03 提供订单号、联系方式和交易哈希，客服将尽快为您发货')">已完成转账</button>
+            <button class="modal-btn confirm" onclick="confirmPaid()">我已付款</button>
         </div>
     </div>
 </div>
@@ -562,10 +640,10 @@
 <div class="footer-nav">
     <div class="nav-item active" id="nav-home" onclick="goHome()">
         <div class="nav-icon">🏠</div>
-        <div class="nav-text">商城</div>
+        <div class="nav-text">首页</div>
     </div>
     <div class="nav-item" id="nav-query" onclick="goToQuery()">
-        <div class="nav-icon">🔍</div>
+        <div class="nav-icon">📋</div>
         <div class="nav-text">订单查询</div>
     </div>
     <div class="nav-item" onclick="window.open('https://t.me/wxch03', '_blank')">
@@ -579,16 +657,22 @@
 </div>
 
 <script>
-// USDT汇率
+// 配置
 const RATE = 6.85;
 const USDT_ADDRESS = 'TV2TuxxvGgzD2tQ8C6VDpqa7yMvn8AAmcK';
+const ALIPAY_URL = 'https://qr.alipay.com/fkx16193ubdgzfllkobdo53';
 const PRICE_MULTIPLIER = 10;
-const PRICE_DIVISOR = 5; // 下调5倍的除数
+const PRICE_DIVISOR = 5;
 
-// 订单存储
+// 数据
 let orders = [];
+let currentPayMethod = 'alipay';
+let currentCategory = 'all';
+let selectedProduct = null;
+let currentOrderId = '';
+let currentBuyContact = '';
 
-// 分类名称映射
+// 分类配置
 const categoryNames = {
     all: { title: '⚡️ 卡密1692', subtitle: '共1种商品' },
     wx: { title: 'VX/企业VX/QQ', subtitle: '共110种商品' },
@@ -601,25 +685,23 @@ const categoryNames = {
     dingding: { title: '钉钉/连信/简信', subtitle: '共43种商品' },
     sanwang: { title: '三网192/冷门APP', subtitle: '共285种商品' },
     lengmen: { title: '冷门APP直登账号', subtitle: '共144种商品' },
-    intl: { title: 'WhatsApp Line Kakao 成品号', subtitle: '共28种商品' },
-    tg: { title: 'TG全球飞机号-各国靓号 ✈️', subtitle: '共55种商品' },
+    intl: { title: 'WhatsApp Line Kakao', subtitle: '共28种商品' },
+    tg: { title: 'TG全球飞机号', subtitle: '共55种商品' },
     appleid: { title: '全球各国苹果ID', subtitle: '共25种商品' },
     card: { title: '港卡/美卡', subtitle: '共54种商品' },
     kyc: { title: '交易所KYC账号', subtitle: '共18种商品' }
 };
 
-// 计算最终价格
+// 计算价格
 function calcPrice(basePrice, isSpecial = false) {
     let price = basePrice * PRICE_MULTIPLIER;
-    if (isSpecial) {
-        price = price / PRICE_DIVISOR; // 下调5倍
-    }
+    if (isSpecial) price = price / PRICE_DIVISOR;
     return Math.round(price * 100) / 100;
 }
 
-// 完整商品数据
+// 商品数据
 const allProducts = [
-    { id: 'all1', name: '猪猪侠⚡️+852高质量香港企业VX首次注册留卡120天左右售后一切', price: calcPrice(4), stock: 1361, category: 'all' },
+    { id: 'all1', name: '⚡️ 卡密1692 - 专属卡密', price: calcPrice(4), stock: 9999, category: 'all' },
     { id: 'wx1', name: 'VX全新号 未实名 可换绑', price: calcPrice(5), stock: 999, category: 'wx' },
     { id: 'wx2', name: 'VX满月号 稳定老号 可实名', price: calcPrice(12), stock: 680, category: 'wx' },
     { id: 'wx3', name: 'VX满年号 高权重 带朋友圈', price: calcPrice(35), stock: 256, category: 'wx' },
@@ -673,7 +755,6 @@ const allProducts = [
     { id: 'lm2', name: '美篇APP 成品老号 带文章', price: calcPrice(10), stock: 250, category: 'lengmen' },
     { id: 'lm3', name: '土豆密聊 全新号 可加群', price: calcPrice(15), stock: 200, category: 'lengmen' },
     { id: 'lm4', name: '其他冷门APP 直登账号', price: calcPrice(18), stock: 144, category: 'lengmen' },
-    // 以下分类价格下调5倍
     { id: 'int1', name: 'WhatsApp 成品号 可接收短信', price: calcPrice(25, true), stock: 150, category: 'intl' },
     { id: 'int2', name: 'Line 成品号 日本/台湾', price: calcPrice(28, true), stock: 120, category: 'intl' },
     { id: 'int3', name: 'Kakao 成品号 韩国', price: calcPrice(30, true), stock: 90, category: 'intl' },
@@ -695,16 +776,27 @@ const allProducts = [
     { id: 'kyc3', name: '交易所KYC 代认证服务', price: calcPrice(120), stock: 12, category: 'kyc' }
 ];
 
-let currentCategory = 'all';
-let selectedProduct = null;
-let currentOrderId = '';
-let currentBuyContact = '';
-
-// 生成订单号
+//生成订单号
 function generateOrderId() {
     const timestamp = Date.now().toString().slice(-8);
     const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     return `WXCF${timestamp}${random}`;
+}
+
+// 切换支付方式
+function switchPayMethod(method) {
+    currentPayMethod = method;
+    document.querySelectorAll('.pay-method-item').forEach(el => {
+        el.classList.remove('active');
+        if (el.dataset.method === method) el.classList.add('active');
+    });
+    if (method === 'alipay') {
+        document.getElementById('alipayContent').classList.remove('hidden');
+        document.getElementById('usdtContent').classList.add('hidden');
+    } else {
+        document.getElementById('alipayContent').classList.add('hidden');
+        document.getElementById('usdtContent').classList.remove('hidden');
+    }
 }
 
 // 跳转到分类页
@@ -715,7 +807,8 @@ function goToCategory(cat) {
     document.getElementById('catSubtitle').textContent = info.subtitle;
     document.getElementById('productCatName').textContent = info.title;
     
-    renderProductList(cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat));
+    const filtered = cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat);
+    renderProductList(filtered);
     
     document.getElementById('page-home').classList.remove('active');
     document.getElementById('page-query').classList.remove('active');
@@ -806,13 +899,13 @@ function buyProduct(id) {
     document.getElementById('confirmPrice').textContent = '￥' + selectedProduct.price;
     document.getElementById('confirmStock').textContent = selectedProduct.stock + '件';
     const usdtAmount = (selectedProduct.price / RATE).toFixed(4);
-    document.getElementById('confirmTotal').textContent = usdtAmount + ' USDT';
+    document.getElementById('confirmTotal').textContent = '￥' + selectedProduct.price + ' / ' + usdtAmount + ' USDT';
 
     document.getElementById('confirmModal').classList.add('show');
     document.getElementById('buyContact').value = '';
 }
 
-// 验证联系方式并进入支付
+// 验证并进入支付
 function validateAndPay() {
     const contact = document.getElementById('buyContact').value.trim();
     if(!contact) {
@@ -823,9 +916,9 @@ function validateAndPay() {
     
     currentBuyContact = contact;
     currentOrderId = generateOrderId();
+    const usdtAmount = (selectedProduct.price / RATE).toFixed(4);
     
     // 保存订单
-    const usdtAmount = (selectedProduct.price / RATE).toFixed(4);
     orders.push({
         orderId: currentOrderId,
         productName: selectedProduct.name,
@@ -837,8 +930,21 @@ function validateAndPay() {
     });
     
     closeConfirmModal();
+    
+    // 填充订单信息
+    document.getElementById('orderIdValueAlipay').textContent = currentOrderId;
+    document.getElementById('payAmountCN').textContent = selectedProduct.price;
     document.getElementById('orderIdValue').textContent = currentOrderId;
     document.getElementById('payAmount').textContent = usdtAmount;
+    
+    // 默认选中支付宝
+    currentPayMethod = 'alipay';
+    document.querySelectorAll('.pay-method-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.method === 'alipay');
+    });
+    document.getElementById('alipayContent').classList.remove('hidden');
+    document.getElementById('usdtContent').classList.add('hidden');
+    
     document.getElementById('payModal').classList.add('show');
 }
 
@@ -854,7 +960,7 @@ function copyPayAddress() {
     const usdtAmount = (selectedProduct.price / RATE).toFixed(4);
     const text = `订单号：${currentOrderId}\n联系方式：${currentBuyContact}\n币种：USDT (TRC20 网络)\n地址：${USDT_ADDRESS}\n金额：${usdtAmount} USDT`;
     navigator.clipboard.writeText(text).then(() => {
-        alert('✅ 订单信息、地址与金额已复制到剪贴板');
+        alert('✅ 已复制到剪贴板！');
     }).catch(() => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
@@ -862,8 +968,19 @@ function copyPayAddress() {
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        alert('✅ 订单信息、地址与金额已复制到剪贴板');
+        alert('✅ 已复制到剪贴板！');
     });
+}
+
+function confirmPaid() {
+    const tip = currentPayMethod === 'alipay' 
+        ? '✅ 感谢您的付款！\n\n请保存订单号和支付截图，联系客服 @wxch03 发货，客服核实后会尽快为您发货~'
+        : '✅ 感谢您的转账！\n\n请保存订单号和交易哈希，联系客服 @wxch03 确认到账并发货~';
+    alert(tip);
+    // 更新订单状态
+    const order = orders.find(o => o.orderId === currentOrderId);
+    if(order) order.status = '待审核';
+    closePayModal();
 }
 
 // 订单查询
@@ -898,5 +1015,6 @@ function queryOrders() {
     `).join('');
 }
 </script>
+
 </body>
 </html>
