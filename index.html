@@ -407,7 +407,7 @@
 <div id="page-home" class="page active">
     <div class="header">
         <h1>万兴财富海内外账号</h1>
-        <p>✈️ <a href="https://t.me/wxch03" target="_blank">@wxch03</a></p>
+        <p>✈️ <a href="https://t.me/wxch03" target="_blank">@wxch03</a> | QQ客服：<a href="qq://1655988714">1655988714</a></p>
     </div>
 
     <!-- 公告 -->
@@ -420,7 +420,7 @@
             3、验证码就在给的链接里面出现 下单后自行保存号码和链接，复制保存到手机或电脑上<br>
             付完款不出订单，用留的联系方式重新查<br>
             防失联频道：<a href="https://t.me/wxcfpd" target="_blank">万兴财富业务总频道 @wxcfpd</a><br>
-            ✈️客服：<a href="https://t.me/wxch03" target="_blank">@wxch03</a>
+            ✈️TG客服：<a href="https://t.me/wxch03" target="_blank">@wxch03</a> | 💬QQ客服：1655988714
         </div>
     </div>
 
@@ -477,11 +477,9 @@
             <div class="category-count">共144种商品</div>
         </div>
         <div class="category-item" onclick="goToCategory('intl')">
-            <div class="category-name">WhatsApp Line Kakao 成品号</div>
-            <div class="category-count">共28种商品</div>
+            <div class="category-name">WhatsApp Line Kakao 成品号</div><div class="category-count">共28种商品</div>
         </div>
-        <div class="category-item"
-onclick="goToCategory('tg')">
+        <div class="category-item" onclick="goToCategory('tg')">
             <div class="category-name">TG全球飞机号-各国靓号 ✈️</div>
             <div class="category-count">共55种商品</div>
         </div>
@@ -550,7 +548,7 @@ onclick="goToCategory('tg')">
         </div>
         <div class="modal-input-row">
             <div class="modal-input-label">联系方式 *</div>
-            <input type="text" class="modal-input" id="buyContact" placeholder="请输入TG/手机号/微信号">
+            <input type="text" class="modal-input" id="buyContact" placeholder="请输入TG/手机号/微信号/QQ">
         </div>
         <div class="modal-row total">
             <span>支付金额：</span>
@@ -598,9 +596,9 @@ onclick="goToCategory('tg')">
                 ⚠️ 注意事项：<br>
                 1. 点击上方按钮，打开支付宝扫码付款<br>
                 2. 付款时请在备注填写您的订单号，方便快速核对<br>
-                3. 支付完成后，请保存支付截图，联系客服发货<br>
+                3. 支付完成后，点击下方「我已付款」按钮<br>
                 4. 防失联频道：<a href="https://t.me/wxcfpd" target="_blank" style="color:inherit; text-decoration:underline;">@wxcfpd</a><br>
-                5. 客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit; text-decoration:underline;">@wxch03</a>
+                5. TG客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit; text-decoration:underline;">@wxch03</a> | QQ客服：1655988714
             </div>
         </div>
 
@@ -623,9 +621,9 @@ onclick="goToCategory('tg')">
                 ⚠️ 注意事项：<br>
                 1. 请务必使用 <strong>TRC20 网络</strong>转账，选错网络资产可能丢失！<br>
                 2. 请精确支付显示金额，不要多转或少转<br>
-                3. 转账后保存交易哈希，联系客服确认发货<br>
+                3. 转账完成后，点击下方「我已付款」按钮<br>
                 4. 防失联频道：<a href="https://t.me/wxcfpd" target="_blank" style="color:inherit; text-decoration:underline;">@wxcfpd</a><br>
-                5. 客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit; text-decoration:underline;">@wxch03</a>
+                5. TG客服：<a href="https://t.me/wxch03" target="_blank" style="color:inherit; text-decoration:underline;">@wxch03</a> | QQ客服：1655988714
             </div>
         </div>
 
@@ -648,7 +646,7 @@ onclick="goToCategory('tg')">
     </div>
     <div class="nav-item" onclick="window.open('https://t.me/wxch03', '_blank')">
         <div class="nav-icon">💬</div>
-        <div class="nav-text">联系客服</div>
+        <div class="nav-text">TG客服</div>
     </div>
     <div class="nav-item" onclick="window.open('https://t.me/wxcfpd', '_blank')">
         <div class="nav-icon">📢</div>
@@ -973,9 +971,7 @@ function copyPayAddress() {
 }
 
 function confirmPaid() {
-    const tip = currentPayMethod === 'alipay' 
-        ? '✅ 感谢您的付款！\n\n请保存订单号和支付截图，联系客服 @wxch03 发货，客服核实后会尽快为您发货~'
-        : '✅ 感谢您的转账！\n\n请保存订单号和交易哈希，联系客服 @wxch03 确认到账并发货~';
+    const tip = '✅ 提交成功！后台正在核对支付信息，核对通过后，账号卡密自动发送';
     alert(tip);
     // 更新订单状态
     const order = orders.find(o => o.orderId === currentOrderId);
